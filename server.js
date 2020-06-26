@@ -1,6 +1,6 @@
-import express from "express"
+import express from "express";
 const app = express();
-import cors from "cors"
+import cors from "cors";
 app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
@@ -39,19 +39,15 @@ app.get("/api/v1/pets/:id", (request, response) => {
   response.status(200).json(pet);
 });
 
-
-
 app.post("/api/v1/pets", (request, response) => {
-  const id = Date.now().toString()
+  const id = Date.now().toString();
   const pet = request.body;
 
   for (let requiredParameter of ["name", "type"]) {
     if (!pet[requiredParameter]) {
-      return response
-        .status(422)
-        .send({
-          error: `Expected format: { name: <String>, type: <String> }. You're missing a "${requiredParameter}" property.`,
-        });
+      return response.status(422).send({
+        error: `Expected format: { name: <String>, type: <String> }. You're missing a "${requiredParameter}" property.`,
+      });
     }
   }
 
@@ -63,13 +59,13 @@ app.post("/api/v1/pets", (request, response) => {
 app.patch("/api/v1/pets/:id", (request, response) => {
   const pets = app.locals.pets;
   const { id } = request.params;
-  let pet = pets.find(pet => pet.id === id)
+  let pet = pets.find((pet) => pet.id === id);
   if (!pet) {
     return response.sendStatus(404);
   }
-  pet.name = request.body.name
-  response.json(pet)
-})
+  pet.name = request.body.name;
+  response.json(pet);
+});
 
 app.delete("/api/v1/pets/:id", (request, response) => {
   const { id } = request.params;
@@ -83,13 +79,3 @@ app.delete("/api/v1/pets/:id", (request, response) => {
     "The pet had been deleted and there are " + app.locals.pets.length + " left"
   );
 });
-
-// app.get("/edited", (request, response) => {
-//   const pets = app.locals.pets;
-//   let changedPets = pets.reduce((pets, pet) => {
-//     if (pet.)
-//     return pets
-//   }, [])
-// });
-
-
